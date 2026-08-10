@@ -9,15 +9,15 @@ const DashboardPage = () => {
   const [dashboard, setDashboard] = useState<DashboardResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const [registeringEventId, setRegisteringEventId] = useState<string | null>(null);
-  const [cancelingEventId, setCancelingEventId] = useState<string | null>(null);
-  const [confirmCancelEventId, setConfirmCancelEventId] = useState<string | null>(null);
-  const [confirmDeleteEventId, setConfirmDeleteEventId] = useState<string | null>(null);
+  const [registeringEventId, setRegisteringEventId] = useState<number | null>(null);
+  const [cancelingEventId, setCancelingEventId] = useState<number | null>(null);
+  const [confirmCancelEventId, setConfirmCancelEventId] = useState<number | null>(null);
+  const [confirmDeleteEventId, setConfirmDeleteEventId] = useState<number | null>(null);
   const [actionMessage, setActionMessage] = useState('');
   const [createdEvents, setCreatedEvents] = useState<DashboardResponse['upcomingEvents']>([]);
   const [createdLoading, setCreatedLoading] = useState(false);
   const [createdError, setCreatedError] = useState('');
-  const [deletingCreatedEventId, setDeletingCreatedEventId] = useState<string | null>(null);
+  const [deletingCreatedEventId, setDeletingCreatedEventId] = useState<number | null>(null);
   const navigate = useNavigate();
 
   const fetchDashboard = async () => {
@@ -51,7 +51,7 @@ const DashboardPage = () => {
     }
   };
 
-  const handleRegister = async (eventId: string) => {
+  const handleRegister = async (eventId: number) => {
     setRegisteringEventId(eventId);
     setActionMessage('');
     try {
@@ -65,7 +65,7 @@ const DashboardPage = () => {
     }
   };
 
-  const handleCancelOpen = (eventId: string) => {
+  const handleCancelOpen = (eventId: number) => {
     setConfirmCancelEventId(eventId);
   };
 
@@ -92,7 +92,7 @@ const DashboardPage = () => {
     }
   };
 
-  const handleDeleteCreated = (eventId: string) => {
+  const handleDeleteCreated = (eventId: number) => {
     setConfirmDeleteEventId(eventId);
   };
 
@@ -119,7 +119,7 @@ const DashboardPage = () => {
       <header className="page-header">
         <div>
           <h1>Volunteer Dashboard</h1>
-          <p>Welcome back{user?.fullName ? `, ${user.fullName}` : ''}.</p>
+          <p>Welcome back{user ? `, ${`${user.firstName} ${user.lastName}`.trim()}` : ''}.</p>
         </div>
       </header>
 
@@ -255,7 +255,7 @@ const DashboardPage = () => {
                     <div>
                       <h3>{event.title}</h3>
                       <p>{event.date} • {event.time}</p>
-                      <p>{event.location}</p>
+                      <p>{event.location || [event.locationStreet, event.locationCity, event.locationState].filter(Boolean).join(', ')}</p>
                       <p className="summary">{event.summary}</p>
                     </div>
                     <div className="card-actions">

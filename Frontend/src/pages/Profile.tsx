@@ -28,7 +28,7 @@ const ProfilePage = () => {
         setLocationStreet((user as any).locationStreet || '');
         setLocationCity((user as any).locationCity || '');
         setLocationState((user as any).locationState || '');
-        setLocation(user.location || ((user as any).locationStreet || '') ? `${(user as any).locationStreet || ''}${(user as any).locationCity ? ', ' + ((user as any).locationCity || '') : ''}${(user as any).locationState ? ', ' + ((user as any).locationState || '') : ''}` : '');
+        setLocation(user.location || '');
         setAvailability(user.availability || '');
         setInterests(user.interests || '');
       } catch (err) {
@@ -45,7 +45,7 @@ const ProfilePage = () => {
     setError('');
     setLoading(true);
     try {
-      await updateCurrentUser({ location: location || undefined, locationStreet: locationStreet || undefined, locationCity: locationCity || undefined, locationState: locationState || undefined, availability, interests });
+      await updateCurrentUser({ locationStreet: locationStreet || undefined, locationCity: locationCity || undefined, locationState: locationState || undefined, availability, interests });
       setMessage('Profile updated.');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unable to update profile');

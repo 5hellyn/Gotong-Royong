@@ -67,7 +67,7 @@ const CreateEventPage = () => {
 
     setForm((current) => ({
       ...current,
-      organizer: current.organizer || user.fullName,
+      organizer: current.organizer || `${user.firstName} ${user.lastName}`.trim() || user.email,
       contact: current.contact || user.email,
     }));
   }, [user]);
@@ -92,8 +92,6 @@ const CreateEventPage = () => {
       startTime: form.startTime,
       endDate: form.endDate,
       endTime: form.endTime,
-      // keep a combined location string for backward compatibility
-      location: `${form.locationStreet.trim()}${form.locationCity ? ', ' + form.locationCity.trim() : ''}${form.locationState ? ', ' + form.locationState.trim() : ''}`,
       locationStreet: form.locationStreet.trim(),
       locationCity: form.locationCity.trim(),
       locationState: form.locationState.trim(),

@@ -38,7 +38,7 @@ const Layout = () => {
                   to="/profile"
                   className={location.pathname === '/profile' ? 'active' : ''}
                 >
-                  {user.fullName}
+                  {`${user.firstName} ${user.lastName}`.trim()}
                 </Link>
                 <button type="button" className="button tertiary small" onClick={handleLogout}>
                   Log out

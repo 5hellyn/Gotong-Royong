@@ -2,33 +2,19 @@ import { FormEvent, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { EventItem, getEventDetail, updateEvent } from '../api/api';
 
-const emptyEvent: EventItem = {
-  id: '',
-  title: '',
-  date: '',
-  time: '',
-  location: '',
-  summary: '',
-  category: 'cleanup',
-  organizer: '',
-  capacity: 0,
-  signedUp: 0,
-  description: '',
-  requirements: [],
-  schedule: '',
-  accessibility: '',
-  contact: '',
-};
-
 const EditEventPage = () => {
   const { eventId } = useParams();
   const navigate = useNavigate();
   const [event, setEvent] = useState<EventItem | null>(null);
   const [form, setForm] = useState({
     title: '',
-    date: '',
-    time: '',
-    location: '',
+    startDate: '',
+    startTime: '',
+    endDate: '',
+    endTime: '',
+    locationStreet: '',
+    locationCity: '',
+    locationState: '',
     summary: '',
     category: 'cleanup',
     organizer: '',
@@ -49,13 +35,17 @@ const EditEventPage = () => {
       setIsLoading(true);
       setMessage('');
       try {
-        const data = await getEventDetail(eventId);
+        const data = await getEventDetail(Number(eventId));
         setEvent(data);
         setForm({
           title: data.title,
-          date: data.date,
-          time: data.time,
-          location: data.location,
+          startDate: data.startDate || '',
+          startTime: data.startTime || '',
+          endDate: data.endDate || '',
+          endTime: data.endTime || '',
+          locationStreet: data.locationStreet || '',
+          locationCity: data.locationCity || '',
+          locationState: data.locationState || '',
           summary: data.summary,
           category: data.category,
           organizer: data.organizer,
@@ -84,18 +74,22 @@ const EditEventPage = () => {
     e.preventDefault();
     if (!eventId) return;
 
-    if (!form.title || !form.date || !form.time || !form.location || !form.summary || !form.category || !form.capacity || !form.description) {
+    if (!form.title || !form.startDate || !form.startTime || !form.endDate || !form.endTime || !form.locationStreet || !form.locationCity || !form.locationState || !form.summary || !form.category || !form.capacity || !form.description) {
       setMessage('Please fill in all required fields.');
       return;
     }
 
     try {
       setMessage('Saving event details...');
-      await updateEvent(eventId, {
+      await updateEvent(Number(eventId), {
         title: form.title.trim(),
-        date: form.date.trim(),
-        time: form.time.trim(),
-        location: form.location.trim(),
+        startDate: form.startDate.trim(),
+        startTime: form.startTime.trim(),
+        endDate: form.endDate.trim(),
+        endTime: form.endTime.trim(),
+        locationStreet: form.locationStreet.trim(),
+        locationCity: form.locationCity.trim(),
+        locationState: form.locationState.trim(),
         summary: form.summary.trim(),
         category: form.category as EventItem['category'],
         organizer: form.organizer.trim(),
@@ -149,16 +143,32 @@ const EditEventPage = () => {
             <input id="title" value={form.title} onChange={(evt) => handleChange('title', evt.target.value)} />
           </div>
           <div className="form-group">
-            <label htmlFor="date">Date <span className="required">*</span></label>
-            <input id="date" value={form.date} onChange={(evt) => handleChange('date', evt.target.value)} />
+            <label htmlFor="startDate">Start date <span className="required">*</span></label>
+            <input id="startDate" type="date" value={form.startDate} onChange={(evt) => handleChange('startDate', evt.target.value)} />
           </div>
           <div className="form-group">
-            <label htmlFor="time">Time <span className="required">*</span></label>
-            <input id="time" value={form.time} onChange={(evt) => handleChange('time', evt.target.value)} />
+            <label htmlFor="startTime">Start time <span className="required">*</span></label>
+            <input id="startTime" type="time" value={form.startTime} onChange={(evt) => handleChange('startTime', evt.target.value)} />
           </div>
           <div className="form-group">
-            <label htmlFor="location">Location <span className="required">*</span></label>
-            <input id="location" value={form.location} onChange={(evt) => handleChange('location', evt.target.value)} />
+            <label htmlFor="endDate">End date <span className="required">*</span></label>
+            <input id="endDate" type="date" value={form.endDate} onChange={(evt) => handleChange('endDate', evt.target.value)} />
+          </div>
+          <div className="form-group">
+            <label htmlFor="endTime">End time <span className="required">*</span></label>
+            <input id="endTime" type="time" value={form.endTime} onChange={(evt) => handleChange('endTime', evt.target.value)} />
+          </div>
+          <div className="form-group">
+            <label htmlFor="locationStreet">Street address <span className="required">*</span></label>
+            <input id="locationStreet" value={form.locationStreet} onChange={(evt) => handleChange('locationStreet', evt.target.value)} />
+          </div>
+          <div className="form-group">
+            <label htmlFor="locationCity">City <span className="required">*</span></label>
+            <input id="locationCity" value={form.locationCity} onChange={(evt) => handleChange('locationCity', evt.target.value)} />
+          </div>
+          <div className="form-group">
+            <label htmlFor="locationState">State <span className="required">*</span></label>
+            <input id="locationState" value={form.locationState} onChange={(evt) => handleChange('locationState', evt.target.value)} />
           </div>
           <div className="form-group">
             <label htmlFor="capacity">Capacity <span className="required">*</span></label>

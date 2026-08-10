@@ -87,7 +87,7 @@ const ListingPage = () => {
                 <div>
                   <h3>{event.title}</h3>
                   <p>{event.date} • {event.time}</p>
-                  <p>{event.location}</p>
+                  <p>{event.location || [event.locationStreet, event.locationCity, event.locationState].filter(Boolean).join(', ')}</p>
                   <p className="summary">{event.summary}</p>
                 </div>
                 <div className="card-actions">

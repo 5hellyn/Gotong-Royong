@@ -24,14 +24,14 @@ const DetailPage = () => {
       setIsLoading(true);
       setError('');
       try {
-        const data = await getEventDetail(eventId);
+        const data = await getEventDetail(Number(eventId));
         setEvent(data);
         setIsRegistered(!!data.isRegistered);
         // if current user is organizer, fetch attendees
         try {
           if (data && user && data.createdBy === user.id) {
             setAttendeesLoading(true);
-            const list = await getEventAttendees(eventId);
+            const list = await getEventAttendees(Number(eventId));
             setAttendees(list);
           }
         } catch (e) {
@@ -100,7 +100,7 @@ const DetailPage = () => {
     setRegisterMessage('Registering you for this event...');
 
     try {
-      const response = await registerForEvent(eventId);
+      const response = await registerForEvent(Number(eventId));
       setEvent((current) =>
         current
           ? { ...current, signedUp: response.signedUp }
@@ -123,7 +123,7 @@ const DetailPage = () => {
     setCanceling(true);
     setRegisterMessage('');
     try {
-      const response = await cancelRegistration(eventId);
+      const response = await cancelRegistration(Number(eventId));
       setEvent((current) => (current ? { ...current, signedUp: response.signedUp } : current));
       setIsRegistered(false);
       setRegisterMessage('Your registration has been canceled.');
@@ -143,7 +143,7 @@ const DetailPage = () => {
         <div className="detail-card">
           <p><strong>Date:</strong> {event.date}</p>
           <p><strong>Time:</strong> {event.time}</p>
-          <p><strong>Location:</strong> {event.location}</p>
+          <p><strong>Location:</strong> {event.location || [event.locationStreet, event.locationCity, event.locationState].filter(Boolean).join(', ')}</p>
           <p><strong>Organizer:</strong> {event.organizer}</p>
           <p><strong>Capacity:</strong> {event.signedUp} of {event.capacity} signed up</p>
           <span className="tag open">{event.category}</span>
@@ -171,11 +171,15 @@ const DetailPage = () => {
         <p>{event.description}</p>
 
         <h3>What to bring</h3>
-        <ul>
-          {event.requirements.map((item) => (
-            <li key={item}>{item}</li>
-          ))}
-        </ul>
+        {Array.isArray(event.requirements) && event.requirements.length > 0 ? (
+          <ul>
+            {event.requirements.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        ) : (
+          <p>No special requirements listed.</p>
+        )}
       </section>
 
       <section className="panel">
@@ -198,7 +202,7 @@ const DetailPage = () => {
             <ul>
               {attendees.map((a) => (
                 <li key={a.id} style={{ marginBottom: '0.5rem' }}>
-                  <strong>{a.fullName}</strong> — {a.email}
+                  <strong>{`${a.firstName} ${a.lastName}`.trim()}</strong> — {a.email}
                   <div style={{ color: 'var(--secondary)', fontSize: '0.95rem' }}>
                     {a.location ? `${a.location} • ` : ''}{a.availability ? `${a.availability} • ` : ''}{a.interests}
                   </div>

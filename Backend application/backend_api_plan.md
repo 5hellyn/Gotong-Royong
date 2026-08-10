@@ -16,10 +16,13 @@ The current frontend includes the following user flows:
 
 ### User
 - id
-- full_name
+- firstName
+- lastName
 - email
-- password_hash
-- location
+- password
+- locationStreet
+- locationCity
+- locationState
 - availability
 - interests
 - created_at
@@ -27,14 +30,18 @@ The current frontend includes the following user flows:
 ### Event
 - id
 - title
-- date
-- time
-- location
+- startDate
+- endDate
+- startTime
+- endTime
+- locationStreet
+- locationCity
+- locationState
 - summary
 - category
 - organizer
 - capacity
-- signed_up
+- signedUp
 - description
 - requirements
 - schedule
@@ -58,11 +65,14 @@ Creates a new volunteer account.
 Request body:
 ```json
 {
-  "fullName": "Maya Chen",
+  "firstName": "Maya",
+  "lastName": "Chen",
   "email": "maya@example.com",
   "password": "secret123",
   "confirmPassword": "secret123",
-  "location": "Seattle, WA",
+  "locationStreet": "123 Main St",
+  "locationCity": "Seattle",
+  "locationState": "WA",
   "availability": "Weekends, Evenings",
   "interests": "Community cleanup, Education"
 }
@@ -73,9 +83,12 @@ Response:
 {
   "user": {
     "id": 1,
-    "fullName": "Maya Chen",
+    "firstName": "Maya",
+    "lastName": "Chen",
     "email": "maya@example.com",
-    "location": "Seattle, WA",
+    "locationStreet": "123 Main St",
+    "locationCity": "Seattle",
+    "locationState": "WA",
     "availability": "Weekends, Evenings",
     "interests": "Community cleanup, Education"
   },
@@ -111,11 +124,15 @@ Response:
 ```json
 [
   {
-    "id": "river-cleanup",
+    "id": 1,
     "title": "River Cleanup",
-    "date": "Saturday, July 12",
-    "time": "9:00 AM - 12:00 PM",
-    "location": "Waterfront Park",
+    "startDate": "2025-07-12",
+    "endDate": "2025-07-12",
+    "startTime": "09:00",
+    "endTime": "12:00",
+    "locationStreet": "123 Waterfront Rd",
+    "locationCity": "Seattle",
+    "locationState": "WA",
     "summary": "Join neighbors to clean the riverfront and protect wildlife.",
     "category": "cleanup",
     "organizer": "Green City Volunteers",
@@ -156,17 +173,17 @@ Example response:
   },
   "upcomingEvents": [
     {
-      "id": "river-cleanup",
+      "id": 1,
       "title": "Park Cleanup",
-      "date": "Sat, July 12",
-      "time": "9:00 AM",
+      "date": "Saturday, July 12",
+      "time": "9:00 AM - 12:00 PM",
       "location": "Riverside Park",
       "status": "registered"
     }
   ],
   "availableEvents": [
     {
-      "id": "reading-buddy-session",
+      "id": 2,
       "title": "Literacy Workshop",
       "date": "Sunday, July 20",
       "time": "2:00 PM",
@@ -191,7 +208,7 @@ Response:
 ```json
 {
   "message": "Successfully registered for the event",
-  "eventId": "river-cleanup",
+  "eventId": 1,
   "signedUp": 19
 }
 ```
@@ -203,7 +220,7 @@ Response:
 ```json
 {
   "message": "Registration canceled",
-  "eventId": "river-cleanup",
+  "eventId": 1,
   "signedUp": 17
 }
 ```

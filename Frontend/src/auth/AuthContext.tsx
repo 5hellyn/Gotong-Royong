@@ -3,7 +3,8 @@ import { getCurrentUser, login as apiLogin, logout as apiLogout, signup as apiSi
 
 export type User = {
   id: number;
-  fullName: string;
+  firstName: string;
+  lastName: string;
   email: string;
   location: string;
   availability: string;

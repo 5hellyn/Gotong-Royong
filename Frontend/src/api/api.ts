@@ -1,16 +1,23 @@
 export type EventItem = {
-  id: string;
+  id: number;
   title: string;
   date: string;
   time: string;
+  startDate?: string;
+  endDate?: string;
+  startTime?: string;
+  endTime?: string;
   location: string;
+  locationStreet?: string;
+  locationCity?: string;
+  locationState?: string;
   summary: string;
   category: 'cleanup' | 'education' | 'food';
   organizer: string;
   capacity: number;
   signedUp: number;
   description: string;
-  requirements: string[];
+  requirements?: string[];
   schedule: string;
   accessibility: string;
   contact: string;
@@ -24,8 +31,6 @@ export type SignupPayload = {
   email: string;
   password: string;
   confirmPassword: string;
-  // optional combined location or structured address
-  location?: string;
   locationStreet?: string;
   locationCity?: string;
   locationState?: string;
@@ -46,8 +51,6 @@ export type CreateEventPayload = {
   startTime?: string;
   endDate?: string;
   endTime?: string;
-  location: string;
-  // structured location fields
   locationStreet?: string;
   locationCity?: string;
   locationState?: string;
@@ -128,12 +131,12 @@ export async function logout() {
 }
 
 export async function getCurrentUser() {
-  return fetchJson<{ id: number; fullName: string; email: string; location: string; availability: string; interests: string }>(
+  return fetchJson<{ id: number; firstName: string; lastName: string; email: string; location: string; availability: string; interests: string }>(
     `${apiBase}/users/me`
   );
 }
 
-export async function updateCurrentUser(payload: { location?: string; locationStreet?: string; locationCity?: string; locationState?: string; availability: string; interests: string }) {
+export async function updateCurrentUser(payload: { locationStreet?: string; locationCity?: string; locationState?: string; availability: string; interests: string }) {
   return fetchJson<{ user: Record<string, unknown>; message: string }>(
     `${apiBase}/users/me`,
     {
@@ -169,30 +172,31 @@ export async function getEvents(filters?: {
   return fetchJson<EventItem[]>(url);
 }
 
-export async function getEventDetail(eventId: string) {
-  return fetchJson<EventItem>(`${apiBase}/events/${encodeURIComponent(eventId)}`);
+export async function getEventDetail(eventId: number | string) {
+  return fetchJson<EventItem>(`${apiBase}/events/${encodeURIComponent(String(eventId))}`);
 }
 
 export type UserProfile = {
   id: number;
-  fullName: string;
+  firstName: string;
+  lastName: string;
   email: string;
   location?: string;
   availability?: string;
   interests?: string;
 };
 
-export async function getEventAttendees(eventId: string) {
-  return fetchJson<UserProfile[]>(`${apiBase}/events/${encodeURIComponent(eventId)}/attendees`);
+export async function getEventAttendees(eventId: number | string) {
+  return fetchJson<UserProfile[]>(`${apiBase}/events/${encodeURIComponent(String(eventId))}/attendees`);
 }
 
 export async function getMyCreatedEvents() {
   return fetchJson<EventItem[]>(`${apiBase}/events/created`);
 }
 
-export async function updateEvent(eventId: string, payload: CreateEventPayload) {
+export async function updateEvent(eventId: number | string, payload: CreateEventPayload) {
   return fetchJson<{ message: string; event: EventItem }>(
-    `${apiBase}/events/${encodeURIComponent(eventId)}`,
+    `${apiBase}/events/${encodeURIComponent(String(eventId))}`,
     {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
@@ -201,9 +205,9 @@ export async function updateEvent(eventId: string, payload: CreateEventPayload) 
   );
 }
 
-export async function deleteEvent(eventId: string) {
+export async function deleteEvent(eventId: number | string) {
   return fetchJson<{ message: string }>(
-    `${apiBase}/events/${encodeURIComponent(eventId)}`,
+    `${apiBase}/events/${encodeURIComponent(String(eventId))}`,
     {
       method: 'DELETE',
     }
@@ -225,18 +229,18 @@ export async function getDashboard() {
   return fetchJson<DashboardResponse>(`${apiBase}/dashboard`);
 }
 
-export async function registerForEvent(eventId: string) {
-  return fetchJson<{ message: string; eventId: string; signedUp: number }>(
-    `${apiBase}/events/${encodeURIComponent(eventId)}/register`,
+export async function registerForEvent(eventId: number | string) {
+  return fetchJson<{ message: string; eventId: number; signedUp: number }>(
+    `${apiBase}/events/${encodeURIComponent(String(eventId))}/register`,
     {
       method: 'POST',
     }
   );
 }
 
-export async function cancelRegistration(eventId: string) {
-  return fetchJson<{ message: string; eventId: string; signedUp: number }>(
-    `${apiBase}/events/${encodeURIComponent(eventId)}/register`,
+export async function cancelRegistration(eventId: number | string) {
+  return fetchJson<{ message: string; eventId: number; signedUp: number }>(
+    `${apiBase}/events/${encodeURIComponent(String(eventId))}/register`,
     {
       method: 'DELETE',
     }

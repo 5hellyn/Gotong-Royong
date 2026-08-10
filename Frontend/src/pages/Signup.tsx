@@ -59,15 +59,12 @@ const SignupPage = () => {
     setMessage('Creating account...');
     setMessageColor('#6b7384');
 
-    const combinedLocation = `${locationStreet.trim()}${locationCity ? ', ' + locationCity.trim() : ''}${locationState ? ', ' + locationState.trim() : ''}`.trim();
-
     const payload: SignupPayload = {
       firstName: firstName.trim(),
       lastName: lastName.trim(),
       email: email.trim(),
       password,
       confirmPassword,
-      location: combinedLocation || undefined,
       locationStreet: locationStreet.trim() || undefined,
       locationCity: locationCity.trim() || undefined,
       locationState: locationState.trim() || undefined,
