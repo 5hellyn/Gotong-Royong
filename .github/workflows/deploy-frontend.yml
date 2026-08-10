@@ -27,7 +27,7 @@ jobs:
       - name: Build frontend
         run: npm run build
         env:
-          VITE_API_BASE_URL: https://YOUR_BACKEND_APP.azurewebsites.net/api
+          VITE_API_BASE_URL: https://https://gotongroyong-backend-bscseeayena5drd9.centralus-01.azurewebsites.net/.azurewebsites.net/api
 
       - name: Deploy to Azure Static Web Apps
         uses: Azure/static-web-apps-deploy@v1
