@@ -80,7 +80,7 @@ export type DashboardResponse = {
   };
 };
 
-const apiBase = import.meta.env.VITE_API_BASE_URL ?? '/api';
+const apiBase = 'https://gotongroyong-backend-bscseeayena5drd9.centralus-01.azurewebsites.net/api';
 
 async function fetchJson<T>(input: string, init?: RequestInit): Promise<T> {
   const response = await fetch(input, init);
