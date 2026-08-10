@@ -1,0 +1,53 @@
+Create the above, with placeholder texts for DB_CONFIG (I will modify them myself). Make sure that the entire project is compatible with the following database tables:
+
+-- Users
+CREATE TABLE users (
+  id INTEGER PRIMARY KEY,
+  first_name TEXT NOT NULL,
+  last_name TEXT NOT NULL,
+  email TEXT NOT NULL UNIQUE,
+  password_hash TEXT NOT NULL,
+  street_address TEXT,
+  city TEXT,
+  state TEXT,
+  availability TEXT,
+  interests TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Events
+CREATE TABLE events (
+  id INTEGER PRIMARY KEY,
+  title TEXT NOT NULL,
+  summary TEXT NOT NULL,
+  description TEXT,
+  category TEXT NOT NULL CHECK (category IN ('cleanup', 'education', 'food')),
+  organizer_id INTEGER NOT NULL REFERENCES users(id),
+  street_address TEXT NOT NULL,
+  city TEXT NOT NULL,
+  state TEXT NOT NULL,
+  start_date DATE NOT NULL,
+  end_date DATE NOT NULL,
+  start_time TIME NOT NULL,
+  end_time TIME NOT NULL,
+  capacity INTEGER NOT NULL CHECK (capacity > 0),
+  schedule TEXT,
+  accessibility TEXT,
+  contact_email TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+-- Event registrations
+CREATE TABLE event_registrations (
+  id INTEGER PRIMARY KEY,
+  event_id INTEGER NOT NULL REFERENCES events(id) ON DELETE CASCADE,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  status TEXT NOT NULL DEFAULT 'registered'
+    CHECK (status IN ('registered', 'canceled', 'pending')),
+  registered_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE(event_id, user_id)
+);

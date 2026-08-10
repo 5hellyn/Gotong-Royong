@@ -1,0 +1,3 @@
+& c:/Projects/Capstone/.venv/Scripts/Activate.ps1
+
+c:/Projects/Capstone/.venv/Scripts/python.exe app.py
