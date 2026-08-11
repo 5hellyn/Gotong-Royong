@@ -1,0 +1,49 @@
+name: Trigger auto deployment for gotongroyong-backend-container
+
+# When this action will be executed
+on:
+  # Automatically trigger it when detected changes in repo
+  push:
+    branches: 
+      [ main ]
+    paths:
+    - '**'
+    - '.github/workflows/gotongroyong-backend-container-AutoDeployTrigger-3ab9fc46-45e9-4601-bfdb-2dc74e276177.yml'
+
+  # Allow manual trigger 
+  workflow_dispatch:      
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions: 
+      id-token: write #This is required for requesting the OIDC JWT Token
+      contents: read #Required when GH token is used to authenticate with private repo
+
+    steps:
+      - name: Checkout to the branch
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.GOTONGROYONGBACKENDCONTAINER_AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.GOTONGROYONGBACKENDCONTAINER_AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.GOTONGROYONGBACKENDCONTAINER_AZURE_SUBSCRIPTION_ID }}
+
+      - name: Build and push container image to registry
+        uses: azure/container-apps-deploy-action@v2
+        with:
+          appSourcePath: ${{ github.workspace }}
+          _dockerfilePathKey_: _dockerfilePath_
+          _targetLabelKey_: _targetLabel_
+          registryUrl: 
+          registryUsername: ${{ secrets.GOTONGROYONGBACKENDCONTAINER_REGISTRY_USERNAME }}
+          registryPassword: ${{ secrets.GOTONGROYONGBACKENDCONTAINER_REGISTRY_PASSWORD }}
+          containerAppName: gotongroyong-backend-container
+          resourceGroup: gotongroyong-rg
+          imageToBuild: default/[parameters('containerAppName')]:${{ github.sha }}
+          _buildArgumentsKey_: |
+            _buildArgumentsValues_
+
+
