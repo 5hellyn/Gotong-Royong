@@ -2,14 +2,36 @@ import os
 from datetime import date, datetime, time
 
 import psycopg2
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, session
 from flask_cors import CORS
 from psycopg2.extras import RealDictCursor
 from werkzeug.security import check_password_hash, generate_password_hash
 
 app = Flask(__name__)
-CORS(app)
+app.secret_key = os.getenv("SECRET_KEY", "dev-secret-change-in-production")
 app.config["JSON_SORT_KEYS"] = False
+# Required for cross-origin session cookies
+app.config["SESSION_COOKIE_SAMESITE"] = "None"
+app.config["SESSION_COOKIE_SECURE"] = True
+
+
+def get_allowed_origins():
+    origins = [
+        "http://localhost:5173",
+        "http://localhost:4173",
+        "https://*.azurestaticapps.net",
+        "https://*.azurewebsites.net",
+    ]
+    env_origins = os.getenv("FRONTEND_ORIGIN", "")
+    if env_origins:
+        for origin in env_origins.split(","):
+            cleaned = origin.strip()
+            if cleaned:
+                origins.append(cleaned)
+    return origins
+
+
+CORS(app, supports_credentials=True, origins=get_allowed_origins())
 
 DB_CONFIG = {
     "host": os.getenv("DB_HOST", "gotong-royong-server.postgres.database.azure.com"),
@@ -29,7 +51,7 @@ def get_db_connection():
 
 
 def get_current_user():
-    user_id = app.config.get("current_user_id")
+    user_id = session.get("user_id")
     if user_id is None:
         return None
 
@@ -252,7 +274,7 @@ def signup():
     except Exception as exc:
         return jsonify({"error": f"Database error: {exc}"}), 500
 
-    app.config["current_user_id"] = user_id
+    session["user_id"] = user_id
     return jsonify({"user": safe_user_payload({
         "id": user_id,
         "firstName": first_name,
@@ -295,7 +317,7 @@ def login():
     if not row or not check_password_hash(row["password_hash"], password):
         return jsonify({"error": "Invalid email or password."}), 401
 
-    app.config["current_user_id"] = row["id"]
+    session["user_id"] = row["id"]
     return jsonify({"user": safe_user_payload(normalize_user(row)), "message": "Login successful"}), 200
 
 
@@ -377,7 +399,7 @@ def change_current_user_password():
 
 @app.post("/api/auth/logout")
 def logout():
-    app.config["current_user_id"] = None
+    session.pop("user_id", None)
     return jsonify({"message": "Logged out successfully"}), 200
 
 

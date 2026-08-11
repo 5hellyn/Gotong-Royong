@@ -80,10 +80,11 @@ export type DashboardResponse = {
   };
 };
 
-const apiBase = 'https://gotongroyong-backend-bscseeayena5drd9.centralus-01.azurewebsites.net/api';
+// // VITE_API_BASE overrides for production; local dev uses Vite proxy via /api
+const apiBase = import.meta.env.VITE_API_BASE ?? '/api';
 
 async function fetchJson<T>(input: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(input, init);
+  const response = await fetch(input, { credentials: 'include', ...init });
   const contentType = response.headers.get('Content-Type') ?? '';
   const body = contentType.includes('application/json')
     ? await response.json().catch(() => ({}))
