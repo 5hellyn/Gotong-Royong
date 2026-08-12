@@ -13,6 +13,8 @@ jobs:
   build_and_deploy_job:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
+    env:
+      VITE_API_BASE: https://gotongroyong-backend-bscseeayena5drd9.centralus-01.azurewebsites.net/api
     name: Build and Deploy Job
     permissions:
        id-token: write
