@@ -130,11 +130,17 @@ a {
   padding: 0.85rem 1.25rem;
   font-size: 0.95rem;
   cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.button:hover {
+  transform: translateY(-1px);
 }
 
 .button.primary {
   background: var(--primary);
   color: #fff;
+  box-shadow: 0 8px 16px rgba(45, 108, 223, 0.2);
 }
 
 .button.secondary {
@@ -150,6 +156,12 @@ a {
 .button.small {
   padding: 0.65rem 1rem;
   font-size: 0.85rem;
+}
+
+.button.large {
+  padding: 1rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
 }
 
 .button:disabled {
@@ -258,6 +270,351 @@ a {
   margin-top: 1rem;
   color: var(--secondary);
 }
+
+.welcome-page {
+  width: 100%;
+  display: grid;
+  gap: 2rem;
+  padding-bottom: 1rem;
+}
+
+.welcome-hero {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 2rem;
+  align-items: center;
+  padding: 2.5rem;
+  background: linear-gradient(135deg, #f8fafc 0%, #eef7f5 100%);
+}
+
+.welcome-copy {
+  max-width: 640px;
+}
+
+.eyebrow {
+  margin: 0 0 0.75rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.eyebrow.dark {
+  color: #0f766e;
+}
+
+.welcome-copy h1 {
+  margin: 0 0 1rem;
+  font-size: clamp(2.5rem, 4vw, 4.3rem);
+  line-height: 1.02;
+  letter-spacing: -0.07em;
+}
+
+.lead {
+  margin: 0;
+  font-size: 1.08rem;
+  line-height: 1.7;
+  color: var(--secondary);
+}
+
+.welcome-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 2rem 0 1.5rem;
+}
+
+.welcome-trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.welcome-trust div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.welcome-trust strong {
+  font-size: 1.6rem;
+  letter-spacing: -0.04em;
+}
+
+.welcome-trust span {
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.hero-visual {
+  position: relative;
+  min-height: 520px;
+  overflow: hidden;
+  border-radius: 28px;
+  box-shadow: 0 24px 48px rgba(15, 23, 42, 0.08);
+}
+
+.hero-visual img,
+.organizer-visual img,
+.event-card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-visual img {
+  height: 100%;
+}
+
+.floating-stack {
+  position: absolute;
+  left: 1.25rem;
+  bottom: 1.25rem;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.floating-card {
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 18px;
+  padding: 1rem 1.1rem;
+  box-shadow: 0 20px 35px rgba(15, 23, 42, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  max-width: 220px;
+}
+
+.mini-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  max-width: 280px;
+}
+
+.mini-metrics div {
+  background: rgba(15, 23, 42, 0.72);
+  color: #fff;
+  border-radius: 16px;
+  padding: 0.8rem 0.9rem;
+  display: grid;
+  gap: 0.2rem;
+}
+
+.mini-metrics strong {
+  font-size: 1.1rem;
+}
+
+.mini-metrics span {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.floating-label {
+  color: var(--primary);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.floating-card strong {
+  font-size: 1.3rem;
+  letter-spacing: -0.04em;
+}
+
+.floating-card span {
+  color: var(--secondary);
+  font-size: 0.82rem;
+}
+
+.benefits-section,
+.featured-section,
+.organizer-cta {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 2rem;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.03);
+}
+
+.section-header {
+  margin-bottom: 1.5rem;
+}
+
+.section-header h2,
+.organizer-copy h2 {
+  margin: 0;
+  font-size: clamp(2rem, 3vw, 2.6rem);
+  letter-spacing: -0.05em;
+}
+
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.benefit-card {
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 1.5rem;
+}
+
+.benefit-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(39, 166, 155, 0.12);
+  color: #0f766e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.benefit-card h3 {
+  margin: 0 0 0.75rem;
+  font-size: 1.25rem;
+}
+
+.benefit-card p {
+  margin: 0;
+  color: var(--secondary);
+  line-height: 1.7;
+}
+
+.split-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: end;
+}
+
+.text-link {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.event-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.welcome-event-grid {
+  gap: 1rem;
+}
+
+.welcome-event-card {
+  border-radius: 16px;
+  padding: 1.25rem;
+  background: #fff;
+  border: 1px solid var(--border);
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.03);
+}
+
+.welcome-event-body {
+  padding: 0;
+  border-top: none;
+}
+
+.event-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  background: #edf8f5;
+  color: #0f766e;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 0.8rem;
+}
+
+.event-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: 0.76rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.75rem;
+}
+
+.event-body h3 {
+  margin: 0 0 0.6rem;
+  font-size: 1.35rem;
+  letter-spacing: -0.04em;
+}
+
+.event-body p {
+  margin: 0 0 1rem;
+  color: var(--secondary);
+  line-height: 1.7;
+}
+
+.organizer-cta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  align-items: center;
+  background: linear-gradient(135deg, #effcfb 0%, #f8fbff 100%);
+}
+
+.organizer-copy {
+  max-width: 520px;
+}
+
+.organizer-copy p {
+  color: var(--secondary);
+  line-height: 1.7;
+  margin: 1rem 0 1.5rem;
+}
+
+.organizer-visual {
+  min-height: 340px;
+  overflow: hidden;
+  border-radius: 22px;
+}
+
+@media (max-width: 900px) {
+  .welcome-hero,
+  .organizer-cta,
+  .benefits-grid,
+  .event-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .split-header {
+    align-items: start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 800px) {
+  .welcome-hero {
+    padding: 1.5rem;
+  }
+
+  .welcome-copy h1 {
+    font-size: 2.4rem;
+  }
+
+  .benefits-section,
+  .featured-section,
+  .organizer-cta {
+    padding: 1.25rem;
+  }
+}
+
 
 .modal-backdrop {
   position: fixed;

@@ -18,9 +18,8 @@ app.config["SESSION_COOKIE_SECURE"] = True
 def get_allowed_origins():
     origins = [
         "http://localhost:5173",
-        "http://localhost:4173",
+        "https://brave-rock-0c84aef10.7.azurestaticapps.net",
         "https://*.azurestaticapps.net",
-        "https://*.azurewebsites.net",
     ]
     env_origins = os.getenv("FRONTEND_ORIGIN", "")
     if env_origins:

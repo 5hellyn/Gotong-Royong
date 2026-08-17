@@ -6,11 +6,9 @@ const Layout = () => {
   const navigate = useNavigate();
   const { user, loading, logout } = useAuth();
 
-  const navItems = [
-    { label: 'Home', path: '/dashboard' },
-    { label: 'Browse Events', path: '/listing' },
-    // My Events page removed; use Dashboard "Events You Created" section
-  ];
+  const navItems = user
+    ? [{ label: 'Home', path: '/dashboard' }, { label: 'Browse Events', path: '/listing' }]
+    : [{ label: 'Browse Events', path: '/listing' }];
 
   const handleLogout = async () => {
     await logout();
@@ -20,7 +18,9 @@ const Layout = () => {
   return (
     <>
       <header className="top-nav">
-        <div className="brand">Gotong Royong</div>
+        <Link to="/" className="brand" aria-label="Go to welcome page">
+          Gotong Royong
+        </Link>
         <nav>
           {navItems.map((item) => (
             <Link
